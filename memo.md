@@ -35,12 +35,51 @@
  ```
 
 ## 4. subscribe()
- - render는 언제나 실행 시, 현재 state를 반영한 UI를 만든다. 그러므로, State값이 바뀔 때 마다 render()를 실행하면, 알아서 데이터가 동기화된 UI를 만들 수 있다.
+- render는 언제나 실행 시, 현재 state를 반영한 UI를 만든다. 그러므로, State값이 바뀔 때 마다 render()를 실행하면, 알아서 데이터가 동기화된 UI를 만들 수 있다.
 
- - 알아서 state값이 바뀔 때 마다 UI를 바뀌게 하려면 subscribe()를 사용해야 한다.
+- 알아서 state값이 바뀔 때 마다 UI를 바뀌게 하려면 subscribe()를 사용해야 한다.
 
- - 아래 예시처럼, store의 메소드인 subscribe()인자에 render를 전달하면 된다. 이렇게 하면, state값이 바뀔때마다 render()가 호출되며 UI가 새롭게 갱신된다.
+- 아래 예시처럼, store의 메소드인 subscribe()인자에 render를 전달하면 된다. 이렇게 하면, state값이 바뀔때마다 render()가 호출되며 UI가 새롭게 갱신된다.
 
  ```
  store.subscribe(render)
  ```
+
+## 5. dispatch()
+- 만약 사용자가, 텍스트를 입력하고 submit 버튼을 누르면 어떤 일이 발생할까? 
+
+- redux에서는, 이벤트 발생 시, dispatch 함수를 실행해 action이라는 객체를 전송한다.
+
+- dispatch에는 action이 전달된다. 여기서 action이란, 객체를 의미하는데 아래 예제에선 type이 create이고, payload 프로퍼티를 가지는 객체를 전송한다.
+ ```
+ <form onSubmit = "
+  ... 
+  store.dispatch({type:'create', payload: {title:title, desc:desc}})
+ "> ... </form>
+ ```
+
+- 그럼 dispatch() 사용 시, 무슨 일을 할까?
+ 1. reducer를 호출해 state 값을 바꾼다.
+    - reducer는 state값을 입력으로 받고, action의 type에 따라 
+      새로운 state를 만들어 리턴해야함. (state를 가공하여 return)
+
+ 2. reducer에 의해 state가 변경되어 새 state가 return되었으니,
+    subscribe()를 호출한다. 
+     - 그러면 subscribe()는 구독 목록에 등록된, 연결된 구독자를 모두 호출해 render()가 실행되어 UI를 갱신한다.
+     - subscribe()함수에 인자로 전달된 수들은 값이 변경될 때마다 호출된다.
+
+- dispatch가 reducer를 호출할 때 2개의 값을 전달하는데, 그는 아래와 같다.
+ 1. 현재 state값
+ 2. action 데이터 (객체)
+ ```
+ function reducer(state, action){
+  if(action.type === 'create'){
+    ...
+
+    return state의 새로운 값
+  }
+ }
+ ```
+
+## 6. 
+ - 
