@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# 상태관리 공부 (Redux)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
