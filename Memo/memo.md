@@ -90,5 +90,31 @@
  }
  ```
 
-## 6. 
- - 
+## 6. reducer() 사용과 state반환 시 주의점 
+ - dispatch로 action객체를 전달받은 reducer는 기존 state값과 action객체를 받는다.
+ - 여기서, reducer()는 새 state를 return한다.
+ - 이 새로운 state는 Object.assign()을 통해 복사된 객체를 사용한다.
+
+ ```
+  function reducer(state, action) {
+    if (state === undefined) {
+      return { color: "yellow" };
+    }
+
+    if(action.type === 'CHANGE_COLOR'){
+
+      /* 객체 복사를 위해, assign 함수 사용
+        1번째 인자: 빈 객체
+        2번째 인자: 1번째 인자에 넣을, 복제할 속성을 가진 객체 (3번째 인자도 마찬가지로 2번째인자까지 복제한 결과에 추가됨) */
+
+      // 첫 번째 인자의 빈 객체 안에 state의 프로퍼티가 들어간다 -> {color:'red'} 가 state 프로퍼티가 있는 곳에 또 한번 복제된다.
+      let newState = Object.assign({}, state, {color:'red'});
+      console.log(state, newState);
+
+      // 받은 state값을 그냥 수정해서 그걸 return하지 말고,
+      // state값을 복제하고, 복사본을 변경하고 return한다.
+      // 이는 undo, redo를 가능케하고, 애플리케이션이 예측 가능한 동작을 하게끔 한다.
+      return newState;
+    }
+  }
+ ```

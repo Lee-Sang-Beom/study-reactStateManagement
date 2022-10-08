@@ -1,3 +1,5 @@
+# store 생성부터 state 초기화 후 시작화면 반영하기
+
 ## 1. index.js
 ```
 import React from "react";
