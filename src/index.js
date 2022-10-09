@@ -24,8 +24,10 @@ function reducer(state, action) {
       1번째 인자: 빈 객체
       2번째 인자: 1번째 인자에 넣을, 복제할 속성을 가진 객체 (3번째 인자도 마찬가지로 2번째인자까지 복제한 결과에 추가됨) */
 
-    // 첫 번째 인자의 빈 객체 안에 state의 프로퍼티가 들어간다 -> {color:'red'} 가 state 프로퍼티가 있는 곳에 또 한번 복제된다.
-    let newState = Object.assign({}, state, {color:'red'});
+    // 첫 번째 인자의 빈 객체 안에 state의 프로퍼티가 들어간다 
+      // -> {color:'red'} 가 state 프로퍼티가 있는 곳에 또 한번 복제된다.
+      // action으로 color전송 시, action.color로 참조가능
+    let newState = Object.assign({}, state, {color:action.color});
     console.log(state, newState);
 
     // 받은 state값을 그냥 수정해서 그걸 return하지 말고,
