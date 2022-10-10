@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -38,7 +39,7 @@ function reducer(state, action) {
 }
 
 // (1) store 생성 -> const store는 전역변수로, 애플리케이션 어디서든지 참조할 수 있게 됨
-const store = createStore(reducer);
+const store = createStore(reducer, composeWithDevTools());
 
 // (3) Provider로 <App/>을 감싸 프로젝트에 redux 적용
 root.render(
