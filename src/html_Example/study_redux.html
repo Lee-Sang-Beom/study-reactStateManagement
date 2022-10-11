@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.0/redux.min.js"
+        ></script>
+</head>
+
+<body>
+    <div id="subject"></div>
+    <div id="TOC"></div>
+    <div id="control"></div>
+    <div id="content"></div>
+
+    <script>
+
+        // func 정의
+        function subject() {
+            document.querySelector("#subject").innerHTML =
+                `
+    <header>
+        <h1>Web</h1>
+        Hello web!
+    </header>
+    `
+        }
+        function TOC() {
+            const state = store.getState();
+            let i=0;
+            let liTags='';
+
+            for (let i=0; i<state.contents.length; i++){
+                liTags = liTags + `
+                <li><a href="${state.contents[i].id}">"${state.contents[i].title}"</a></li>
+                `;
+            }
+            
+            document.querySelector("#TOC").innerHTML =
+                `
+    <nav>
+        <ol>
+            ${liTags}
+        </ol>
+    </nav>
+    `
+        }
+        function control() {
+
+            document.querySelector("#control").innerHTML =
+                `
+    <ul>
+        <li><a href="/create">create</a></li>
+        <li><input type="button" value="delete"></li>
+    </ul>
+    `
+        }
+        function article() {
+            document.querySelector("#content").innerHTML =
+                `
+    <article> 
+        <h2>HTML</h2>
+        HTML is...
+    </article>
+    `
+        }
+
+        // reducer 생성
+        function reducer(state, action){
+
+            // 첫 실행(초기값이 없을 때) 시, default한 객체 반환
+            if(state===undefined){
+                return {
+                    contents:[
+                        {
+                            id:1, title:'HTML', desc: 'HTML is ...'
+                        },
+                        {
+                            id:2, title:'CSS', desc: 'CSS is ...'
+                        }
+                    ]
+                }
+            }
+        }
+
+        // store 생성
+        const store = Redux.createStore(reducer);
+        
+        // func 실행
+        subject();
+        TOC();
+        control();
+        article();
+
+    </script>
+    <!-- <script type="text/javascript" src="./script.js"></script> -->
+</body>
+
+</html>
