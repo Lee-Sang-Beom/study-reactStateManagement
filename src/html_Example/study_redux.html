@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.0/redux.min.js"
-        ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.0/redux.min.js"></script>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
     <div id="content"></div>
 
     <script>
-        function onClickEvent(e){
+        function onClickEvent(e) {
             e.preventDefault();
 
         }
@@ -31,12 +30,13 @@
     </header>
     `
         }
+
         function TOC() {
             const state = store.getState();
-            let i=0;
-            let liTags='';
+            let i = 0;
+            let liTags = '';
 
-            for (let i=0; i<state.contents.length; i++){
+            for (let i = 0; i < state.contents.length; i++) {
                 liTags = liTags + `
                 <li>
                     <a onclick="
@@ -50,7 +50,7 @@
                 </li>
                 `;
             }
-            
+
             document.querySelector("#TOC").innerHTML =
                 `
     <nav>
@@ -60,79 +60,135 @@
     </nav>
     `
         }
+
         function control() {
 
             document.querySelector("#control").innerHTML =
                 `
     <ul>
-        <li><a href="/create">create</a></li>
+        <li><a onclick=
+            "
+            event.preventDefault();
+            "
+            href="/create">create</a></li>
         <li><input type="button" value="delete"></li>
     </ul>
     `
         }
-        function article() {
-            
-            let state = store.getState();
-            let title, desc = "";
 
-            for (let i=0; i<state.contents.length; i++){
-                if(state.contents[i].id === state.select_id){
-                    title = state.contents[i].title;
-                    desc = state.contents[i].desc;
-                    break;
-                }
-            }
-            document.querySelector("#content").innerHTML =
+        function article() {
+            let state = store.getState();
+
+            if (state.mode === 'create') {
+                document.querySelector("#content").innerHTML =
+                    `
+            <article> 
+                <form onsubmit=
+                "
+                event.preventDefault();
+                let title = this.title.value; // form 안의 name이 title인 input의 값을 알아내기 위함
+                let desc = this.desc.value
+                store.dispatch({
+                    type: 'CREATE',
+                    title: title,
+                    desc: desc
+                })
+                ">
+                    <p>
+                        <input type="text" name="title" placeholder="input">
+                    </p>
+                    <p>
+                        <textarea name="desc" placeholder="description"></textarea>
+                    </p>
+                    <p>
+                        <input type="submit">
+                    </p>
+                </form>
+                
+            </article>
             `
+            } else if (state.mode === 'read') {
+                let title, desc = "";
+                for (let i = 0; i < state.contents.length; i++) {
+                    if (state.contents[i].id === state.select_id) {
+                        title = state.contents[i].title;
+                        desc = state.contents[i].desc;
+                        break;
+                    }
+                }
+                document.querySelector("#content").innerHTML =
+                    `
             <article> 
                 <h2>${title}</h2>
                 ${desc}
             </article>
             `
+
+            }
+
         }
 
         // reducer 생성
-        function reducer(state, action){
-            
-            // 첫 실행(초기값이 없을 때) 시, default한 객체 반환
-            if(state===undefined){
-                return {
+        function reducer(state, action) {
 
+            // 첫 실행(초기값이 없을 때) 시, default한 객체 반환
+            if (state === undefined) {
+                return {
+                    mode: 'create', // 기본은 read, create면 글을 쓸 수 있도록 함
                     // select_id는 차후, 클릭 이벤트 발생 시 무엇이 선택되었는지 확인하기 위해 사용
                     select_id: 1,
-                    contents:[
-                        {
-                            id:1, title:'HTML', desc: 'HTML is ...'
+
+                    max_id:2, // 추가할 때 maxid가 지금 무엇인지 확인 (auto_increment)할 예정
+                    contents: [{
+                            id: 1,
+                            title: 'HTML',
+                            desc: 'HTML is ...'
                         },
                         {
-                            id:2, title:'CSS', desc: 'CSS is ...'
+                            id: 2,
+                            title: 'CSS',
+                            desc: 'CSS is ...'
                         }
                     ]
                 }
             }
 
-            
-            if(action.type === 'SELECT'){
+
+            if (action.type === 'SELECT') {
                 // state에 select_id:action 부분만 덮어쓰기
-                let newState = Object.assign({}, state, {select_id:action.id});
+                let newState = Object.assign({}, state, {
+                    select_id: action.id
+                });
+                return newState;
+            } else if (action.type === 'CREATE'){
+                // 기존 배열을 복사해, 똑같은 배열을 return
+                let newContents = state.contents.concat();
+                let newMaxID = state.max_id+1;
+                newContents.push({id:newMaxID, title:action.title, desc:action.desc})
+
+                // 기존 state값을 변경해주어야함 : 새 배열을 만들고, 리턴
+                let newState= Object.assign( {} ,state,{
+                    max_id: newMaxID,
+                    contents: newContents,
+                    mode: 'read', // mode는 read로 변경
+                })
                 return newState;
             }
         }
 
         // store 생성
         const store = Redux.createStore(reducer);
-        
+
         // func 실행
         subject();
         TOC();
         control();
         article();
-        
+
         // TOC 클릭으로, state가 바뀔 때 article에 출력되는 값을 바꿔줘야함
         // subscribe로 구독목록을 만들어, store 내 state가 변경될때마다 article()이 실행되도록 함
         store.subscribe(article);
-
-
+        store.subscribe(TOC);
     </script>
     <!-- <script type="text/javascript" src="./script.js"></script> -->
 </body>
