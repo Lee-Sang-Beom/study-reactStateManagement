@@ -17,7 +17,10 @@
     <div id="content"></div>
 
     <script>
+        function onClickEvent(e){
+            e.preventDefault();
 
+        }
         // func 정의
         function subject() {
             document.querySelector("#subject").innerHTML =
@@ -35,7 +38,16 @@
 
             for (let i=0; i<state.contents.length; i++){
                 liTags = liTags + `
-                <li><a href="${state.contents[i].id}">"${state.contents[i].title}"</a></li>
+                <li>
+                    <a onclick="
+                    event.preventDefault();
+                    let action = {type:'SELECT', id:${state.contents[i].id}};
+                    store.dispatch(action);
+                    "
+                    href="${state.contents[i].id}">
+                    "${state.contents[i].title}"
+                    </a>
+                </li>
                 `;
             }
             
@@ -70,10 +82,13 @@
 
         // reducer 생성
         function reducer(state, action){
-
+            
             // 첫 실행(초기값이 없을 때) 시, default한 객체 반환
             if(state===undefined){
                 return {
+
+                    // select_id는 차후, 클릭 이벤트 발생 시 무엇이 선택되었는지 확인하기 위해 사용
+                    select_id:null,
                     contents:[
                         {
                             id:1, title:'HTML', desc: 'HTML is ...'
@@ -83,6 +98,13 @@
                         }
                     ]
                 }
+            }
+
+            
+            if(action.type === 'SELECT'){
+                // state에 select_id:action 부분만 덮어쓰기
+                let newState = Object.assign({}, state, {select_id:action.id});
+                return newState;
             }
         }
 
