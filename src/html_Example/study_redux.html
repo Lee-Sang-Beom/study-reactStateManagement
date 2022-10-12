@@ -71,13 +71,24 @@
     `
         }
         function article() {
+            
+            let state = store.getState();
+            let title, desc = "";
+
+            for (let i=0; i<state.contents.length; i++){
+                if(state.contents[i].id === state.select_id){
+                    title = state.contents[i].title;
+                    desc = state.contents[i].desc;
+                    break;
+                }
+            }
             document.querySelector("#content").innerHTML =
-                `
-    <article> 
-        <h2>HTML</h2>
-        HTML is...
-    </article>
-    `
+            `
+            <article> 
+                <h2>${title}</h2>
+                ${desc}
+            </article>
+            `
         }
 
         // reducer 생성
@@ -88,7 +99,7 @@
                 return {
 
                     // select_id는 차후, 클릭 이벤트 발생 시 무엇이 선택되었는지 확인하기 위해 사용
-                    select_id:null,
+                    select_id: 1,
                     contents:[
                         {
                             id:1, title:'HTML', desc: 'HTML is ...'
@@ -116,6 +127,11 @@
         TOC();
         control();
         article();
+        
+        // TOC 클릭으로, state가 바뀔 때 article에 출력되는 값을 바꿔줘야함
+        // subscribe로 구독목록을 만들어, store 내 state가 변경될때마다 article()이 실행되도록 함
+        store.subscribe(article);
+
 
     </script>
     <!-- <script type="text/javascript" src="./script.js"></script> -->
