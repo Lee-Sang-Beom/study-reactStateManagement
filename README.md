@@ -1,70 +1,35 @@
-# 상태관리 공부 (Redux)
+## 계획이유
+ - 북스탬프에서 사용한 Recoil보다 대중적으로 사용되고 있는 상태관리 라이브러리인 redux의 기초적인 사용 방법에 대해 학습하기 위해 계획하였습니다.
+ 
+## 학습 내용
+ 1. CDN을 이용한 redux 문법 학습 (src/html_Example/study_redux.html) : CRUD
+    - 해당 CRUD 실습 내용은, React 환경에서도 실습할 필요를 느꼈기 때문에 다른 repository에서 해당 실습을 스스로 진행할 예정
+    - 실습 링크 -> [이동하기](https://github.com/Lee-Sang-Beom/studyRedux_reactEnvironment)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ 2. React 환경 redux 적용법 학습 (src/App.js, index.js) : 버튼 클릭 시, 박스 요소들의 색깔 공통 적용
 
-## Available Scripts
+## install
+### 1. react-redux
+- html의 head태그 내, CDN링크 추가
+```
+<head>
+    ...
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.0/redux.min.js"></script>
+</head>
+```
 
-In the project directory, you can run:
+### 2. react-redux
+ 1. React Project 설치
+    ```
+    npx create-react-papp projectname
+    ```
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ 2. Redux 모듈 설치
+    - react와 redux 바인딩을 할 수 있도록 하는 react-redux 설치
+        ``` 
+        npm i redux react-redux 
+        ```
+    - redux 상태를 확인하기 위한 redux-devtools 설치
+        ``` 
+        npm i --save-dev redux-devtools-extension
+        ```
